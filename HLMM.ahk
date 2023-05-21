@@ -2,6 +2,8 @@
 ;Pandela 2023
 #SingleInstance force
 #Persistent
+#Include ./config/AutoXYWH.ahk ;https://www.autohotkey.com/boards/viewtopic.php?f=6&t=1079
+#Include ./config/BigA.ahk
 SetTitleMatchMode,2
 wao := ""
 ms := ""
@@ -10,13 +12,12 @@ SeekInterval := "0.1"
 AudioArray := []
 DelayArray := []
 FilterArray := []
-;global MyTreeView
+A := new biga()
 px := 0
 py := 0
 Inactive := 0
 counter2 := 0
-#Include ./config/AutoXYWH.ahk ;https://www.autohotkey.com/boards/viewtopic.php?f=6&t=1079
-#Include ./config/BigA.ahk
+
 
 
 
@@ -54,13 +55,13 @@ test3 := winW / 2 - 180
 test4 := winH / 2 - 80
 test8 := winH + 1
 
-    	;Embed FFplay inside our gui
+    	;Embed SoundBrowser inside our gui
 DllCall("SetParent", "uint", TreeWindow, "uint", HLMMwindow)
 id_2 := WinExist("ahk_id " TreeWindow)
 WinSet,Redraw,,%Title%
 
 
-	; Move and resize FFPlay window. Note that if SWP_NOSENDCHANGING
+	; Move and resize SoundBrowser window. Note that if SWP_NOSENDCHANGING
 	; is omitted, it incorrectly readjusts the size of its client area.
 DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
     , "int", test1, "int",test2, "int", test3, "int", test4
@@ -82,11 +83,6 @@ WM_LBUTTONDOWN() {
 }
 
 
-F2::
-ControlSend,,{Space},H.L.M.M
-return
-
-
 F3::
 OpenVideo:
 SplitPath,Input,,sourceFolder,,filename2
@@ -102,11 +98,11 @@ sleep, 500
 
 sleep, 50
 
+;Start the timestamp logging
 if (AlreadyRunning != 1) {
 lt := new CLogTailer(File, Func("NewLine"))
 AlreadyRunning := 1
 }
-
 
 
 
@@ -120,7 +116,7 @@ NewY := FFPlayH / 2
 WinMove,ahk_class SDL_app,,%x%,%y%,%NewX%,%NewY%
 WinSet, Style, -0x30000,ahk_class SDL_app
 DisableCloseButton(FFPlayWindow)
-;msgbox % FFPlayWindow
+
 
 ;Embed FFplay inside our gui
 DllCall("SetParent", "uint", FFplayWindow, "uint", HLMMwindow)
@@ -297,17 +293,7 @@ DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
     , "uint", SWP_NOACTIVATE|SWP_SHOWWINDOW|SWP_NOSENDCHANGING)
 sleep, 20
 WinSet,Redraw,,A
-;WinActivate,H.L.M.M
 return
-
-
-
-
-
-
-
-
-
 
 
 
@@ -487,7 +473,6 @@ FilterArray := []
 Inactive = 1
 gosub, OpenVideo
 input := oldInput
-
 Return
 
 KeepSound:
