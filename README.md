@@ -13,10 +13,10 @@ I still need to optimize a lot so in its current state expect to have to manuall
 · FREE OPEN SOURCE SOFTWARE<br>
 
 # TO DO
-Add video filter support<br>
-Add interactive video timeline slider<br>
-Fix output audio quality<br>
-Additional optimization<br>
-etc etc etc<br>
+· Add video filter support<br>
+· Add interactive video timeline slider<br>
+· Fix output audio quality<br>
+· Additional optimization<br>
+· etc etc etc<br>
 
 ![image](https://github.com/g-l-i-t-c-h-o-r-s-e/H.L.M.M/assets/17163949/60f7d021-8508-46cc-b2fa-d276456d2e3f)
