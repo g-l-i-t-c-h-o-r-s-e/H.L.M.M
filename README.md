@@ -20,4 +20,5 @@ I still need to optimize a lot so in its current state expect to have to manuall
 · Tutorial Video<br>
 · etc etc etc<br>
 
-![image](https://github.com/g-l-i-t-c-h-o-r-s-e/H.L.M.M/assets/17163949/60f7d021-8508-46cc-b2fa-d276456d2e3f)
+![image](https://github.com/g-l-i-t-c-h-o-r-s-e/H.L.M.M/assets/17163949/9a8c7f62-669c-4753-ba16-f81f3f84a6ac)
+
