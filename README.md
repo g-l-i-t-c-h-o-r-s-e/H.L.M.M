@@ -2,7 +2,8 @@
 Using FFplay and FFMpeg as a base, this is a very basic "audio/video editor" 
 primarily focused on quickly adding sound effects to a video; selected from a series of folders easy to access. <br>
 It is very much a work in progress, let me now if you want a feature or something fixed.<br>
-I still need to optimize a lot so in its current state expect to have to manually change some variables.
+I still need to optimize a lot so in its current state expect to have to manually change some variables.<br>
+You can get all the sounds here: https://www.sounds-resource.com/pc_computer/halflifeexpansions/
 
 # Features
 · Resizable preview video window<br>
