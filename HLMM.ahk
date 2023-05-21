@@ -151,9 +151,16 @@ NewLine(text){
 	match := RegExMatch(text,"\d+\.\d+",timestamp)
 	global ms := ceil((timestamp * 1000))
 	
+	;This is to prevent the timestamp from being 0, in sacrifice of a few milliseconds in the timeline
+	if (ms = 0) && (Timestamp != "0.00") {
+		ControlSend,,S,H.L.M.M
+	}
+	
+	;Set the current timeline milliseconds in the gui, can optionally be modified
+	GuiControl,,SoundOffset,%ms%
+	
 	if (wao = 1) {
 		ToolTip % "Timestamp: " timestamp "`n ms: " ms "`n"
-		GuiControl,,SoundOffset,%ms%
 	}
 	
 	if (wao = 0) {
@@ -300,32 +307,6 @@ return
 Forward(ms)
 {
 	ControlSend,,{Right},H.L.M.M
-	sleep, 50
-	ControlSend,,S,H.L.M.M
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
 }
 
 
@@ -333,32 +314,6 @@ Forward(ms)
 Backward(ms)
 {
 	ControlSend,,{Left},H.L.M.M
-	sleep, 50
-	ControlSend,,S,H.L.M.M
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
-	if (ms = 0){
-		ControlSend,,S,H.L.M.M
-	}
 }
 
 
