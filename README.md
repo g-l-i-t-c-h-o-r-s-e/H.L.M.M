@@ -12,7 +12,7 @@ I still need to optimize a lot so in its current state expect to have to manuall
 · You can apply an seperate audio filter to each individual audio file in the filterchain<br>
 · FREE OPEN SOURCE SOFTWARE<br>
 
-#TO DO
+# TO DO
 Add video filter support<br>
 Add interactive video timeline slider<br>
 Fix output audio quality<br>
