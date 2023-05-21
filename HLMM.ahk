@@ -34,8 +34,8 @@ gui 2:  Show, w1280 h720, H.L.M.M
 gui 2:  +Resize
 
 TreeRoot := "C:\Users\Pandela\Downloads\Half-Life 1"
-File := "C:\Users\Pandela\Documents\balls.txt"
-Input := "C:\Users\Pandela\Documents\AHK-Studio-master\Projects\mkvmswsxlbw.webm" ;"C:\Users\Pandela\Downloads\7e17d52906dae7760cfb35d671ea2412_1.mp4" ;"C:\Users\Pandela\Documents\CHEEZCOFI.mp4" ;"C:\msys64\home\Pandela\cofi1.mkv"
+File := A_ScriptDir . "timestampLog.txt"
+Input := ""
 
 
 FileDelete,%File% ;delete timestamp log
