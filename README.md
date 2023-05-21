@@ -22,5 +22,8 @@ You can get all the sounds here: https://www.sounds-resource.com/pc_computer/hal
 · Tutorial Video<br>
 · etc etc etc<br>
 
+# REQUIREMENTS
+FFMpeg and FFplay (Probably need to add them to your PATH environment variable): https://ffbinaries.com/downloads
+
 ![image](https://github.com/g-l-i-t-c-h-o-r-s-e/H.L.M.M/assets/17163949/9a8c7f62-669c-4753-ba16-f81f3f84a6ac)
 
