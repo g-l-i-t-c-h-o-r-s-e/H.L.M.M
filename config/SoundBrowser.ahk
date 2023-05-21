@@ -1,4 +1,4 @@
-﻿AddSubFoldersToTree(Folder, ParentItemID = 0)
+AddSubFoldersToTree(Folder, ParentItemID = 0)
 {
 ; This function adds to the TreeView all subfolders in the specified folder.
 ; It also calls itself recursively to gather nested folders to any depth.
