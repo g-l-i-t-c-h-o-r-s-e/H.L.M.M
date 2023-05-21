@@ -12,7 +12,7 @@ You can get all the sounds here: https://www.sounds-resource.com/pc_computer/hal
 · The FFplay window size and location is remembered when you switch out/load a new video<br>
 · You can apply an seperate audio filter to each individual audio file in the filterchain<br>
 · Preview Audio files by double right clicking, select them by double left clicking<br>
-· Modify the timetamp of where each audio file is placed, down to the millisecond (via gui) <ms>
+· Modify the timetamp of where each audio file is placed, down to the millisecond (via gui)<br>
 · FREE OPEN SOURCE SOFTWARE<br>
 
 # TO DO
