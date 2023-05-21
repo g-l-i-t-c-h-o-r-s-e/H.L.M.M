@@ -5,6 +5,7 @@
 #Include ./config/AutoXYWH.ahk ;https://www.autohotkey.com/boards/viewtopic.php?f=6&t=1079
 #Include ./config/BigA.ahk
 SetTitleMatchMode,2
+SetBatchLines,-1
 wao := ""
 ms := ""
 AlreadyRunning := 0
@@ -17,8 +18,7 @@ px := 0
 py := 0
 Inactive := 0
 counter2 := 0
-
-
+global VideoLoaded := 0
 
 
 FixVideo := 0 ;Convert all frames in video to keyframes
@@ -55,14 +55,13 @@ test3 := winW / 2 - 180
 test4 := winH / 2 - 80
 test8 := winH + 1
 
-    	;Embed SoundBrowser inside our gui
+;Embed SoundBrowser inside our gui
 DllCall("SetParent", "uint", TreeWindow, "uint", HLMMwindow)
 id_2 := WinExist("ahk_id " TreeWindow)
 WinSet,Redraw,,%Title%
 
-
-	; Move and resize SoundBrowser window. Note that if SWP_NOSENDCHANGING
-	; is omitted, it incorrectly readjusts the size of its client area.
+; Move and resize SoundBrowser window. Note that if SWP_NOSENDCHANGING
+; is omitted, it incorrectly readjusts the size of its client area.
 DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
     , "int", test1, "int",test2, "int", test3, "int", test4
     , "uint", SWP_SHOWWINDOW)
@@ -144,6 +143,7 @@ DllCall("SetWindowPos", "uint", FFPlayWindow, "uint", 0
 , "uint",SWP_SHOWWINDOW|SWP_NOSENDCHANGING)
 
 FirstRun := 0 ;;;;asd
+global VideoLoaded := 1
 return
 
 
@@ -152,7 +152,7 @@ NewLine(text){
 	global ms := ceil((timestamp * 1000))
 	
 	;This is to prevent the timestamp from being 0, in sacrifice of a few milliseconds in the timeline
-	if (ms = 0) && (Timestamp != "0.00") {
+	if (ms = 0) && (Timestamp != "0.00") && (VideoLoaded = 1) {
 		ControlSend,,S,H.L.M.M
 	}
 	
@@ -168,7 +168,9 @@ NewLine(text){
 	}
 }
 
-
+F6::
+msgbox % VideoLoaded
+return
 
 ;https://www.autohotkey.com/boards/viewtopic.php?t=47894#p215692
 class CLogTailer {
@@ -426,6 +428,7 @@ AudioArray := []
 DelayArray := []
 FilterArray := []
 Inactive = 1
+global VideoLoaded := 0
 gosub, OpenVideo
 input := oldInput
 Return
@@ -443,13 +446,14 @@ AudioArray := []
 DelayArray := []
 FilterArray := []
 Inactive = 1
+global VideoLoaded := 0
 gosub,OpenVideo
 Return
 
 RemoveSound:
-AudioArray := []
-DelayArray := []
-FilterArray := []
+AudioArray := A.initial(AudioArray)
+DelayArray := A.initial(DelayArray)
+FilterArray := A.initial(FilterArray)
 Inactive = 1
 return
 
@@ -458,6 +462,7 @@ return
 WinGet, hWnd2, ID, ahk_id %id_1%
 WinGetPos, pX,pY,pW,pH,ahk_id %id_1%
 Input := A_GuiEvent
+global VideoLoaded := 0
 gosub,OpenVideo
 Return
 
