@@ -16,6 +16,7 @@ py := 0
 Inactive := 0
 counter2 := 0
 #Include ./config/AutoXYWH.ahk ;https://www.autohotkey.com/boards/viewtopic.php?f=6&t=1079
+#Include ./config/BigA.ahk
 
 
 
@@ -421,12 +422,11 @@ loop %Amt%
 	
 	if (FilterArray[A_Index] != "") {
 		ApplyFilter := "," FilterArray[A_Index]
-		msgbox % ApplyFilter
 	}
 	
 	
 	
-	AddFilters .= "[" A_Index "]adelay=" DelayArray[A_Index] "|" DelayArray[A_Index] ApplyFilter "[HL" A_Index "];"
+	AddFilters .= "[" A_Index "]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,adelay=" DelayArray[A_Index] "|" DelayArray[A_Index] ApplyFilter "[HL" A_Index "];"
 	MixStack .= "[HL" A_Index "]"
 }
 KeepSoundFile := sourceFolder "\output_" counter2 ".mkv"
@@ -444,7 +444,6 @@ return
 
 CurrentSound:
 Gui 1:Submit,NoHide
-msgbox % SoundFilter
 Counter += 1
 AudioArray.push(SoundFile)
 DelayArray.push(SoundOffset)
@@ -478,17 +477,17 @@ if (SoundFilter = "") {
 
 SplitPath,Input,,sourceFolder,,filename2
 newVideo := sourceFolder "\" filename2 "_" sound ".mkv"
-replaceAudio := ComSpec " /c ffmpeg -i " chr(0x22) Input chr(0x22) " -ss " SkipAmt " -i " chr(0x22) SoundFile chr(0x22) " " ApplyFilter " -c:v copy -map 0:v -map 1:a -f nut -c:a pcm_u32le -ac 2  -y " newVideo
-msgbox % replaceAudio
+replaceAudio := ComSpec " /c ffmpeg -i " chr(0x22) Input chr(0x22) " -ss " SkipAmt " -i " chr(0x22) SoundFile chr(0x22) " " ApplyFilter " -c:v copy -map 0:v -map 1:a -f nut -c:a pcm_u32le -ac 2 -shortest -y " newVideo
 runwait, % replaceAudio,,Hide
 oldInput := input
 input := newVideo
-gosub, OpenVideo
-input := oldInput
-Inactive = 1
 AudioArray := []
 DelayArray := []
 FilterArray := []
+Inactive = 1
+gosub, OpenVideo
+input := oldInput
+
 Return
 
 KeepSound:
