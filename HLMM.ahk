@@ -1,4 +1,4 @@
-﻿;Half-Life Meme Maker
+;Half-Life Meme Maker
 ;Pandela 2023
 #SingleInstance force
 #Persistent
@@ -15,7 +15,7 @@ px := 0
 py := 0
 Inactive := 0
 counter2 := 0
-#Include ./AutoXYWH.ahk ;https://www.autohotkey.com/boards/viewtopic.php?f=6&t=1079
+#Include ./config/AutoXYWH.ahk ;https://www.autohotkey.com/boards/viewtopic.php?f=6&t=1079
 
 
 
@@ -127,6 +127,8 @@ WinGetActiveStats,%FFPlayWindow%,FFPlayW,FFPlayH,x,y
 newX := FFPlayW / 2
 NewY := FFPlayH / 2
 WinMove,ahk_class SDL_app,,%x%,%y%,%NewX%,%NewY%
+WinSet, Style, -0x30000,ahk_class SDL_app
+DisableCloseButton(FFPlayWindow)
 ;msgbox % FFPlayWindow
 
 ;Embed FFplay inside our gui
@@ -422,7 +424,7 @@ Nudge()
 
 
 	
-#Include ./SoundBrowser.ahk
+#Include ./config/SoundBrowser.ahk
 
 
 testSound:
@@ -598,8 +600,8 @@ return
 #IfWinActive,H.L.M.M
 S::ControlSend,,S,H.L.M.M ;Allow to send S key to nudge video one frame
 Q:: ;do nothing, prevents closing ffplay window
-#IfWinActive
 
 #IfWinActive, ahk_class SDL_app
 Q:: ;do nothing, prevents closing ffplay window
 Esc:: ;do nothing, prevents closing ffplay window
+F:: ;do nothing, prevents fullscreen ffplay window
