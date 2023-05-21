@@ -23,9 +23,7 @@ FixVideo := 0 ;Convert all frames in video to keyframes
 KeyframeInterval := 1 ;Set to 1 to make ALL frames keyframe, this should probably be 1 if you're using the flag above
 Process,Close,ffplay.exe ;close background ffplay process if its running
 
-;gui,Color,Gray
 ;gui 2:, +LastFound +E0x00010000 ;The ExStyle allows the parent to take focus if it's clicked.
-
 gui 2: color,gray
 gui 2: Add, Button, x134 y574 w176 h81 hWndhBtnOk gSkipBackward, <<<===
 gui 2: Add, Button, x310 y574 w176 h81 hWndhBtnOk2 gSkipForward, ===>>>
@@ -39,22 +37,14 @@ File := "C:\Users\Pandela\Documents\balls.txt"
 Input := "C:\Users\Pandela\Documents\AHK-Studio-master\Projects\mkvmswsxlbw.webm" ;"C:\Users\Pandela\Downloads\7e17d52906dae7760cfb35d671ea2412_1.mp4" ;"C:\Users\Pandela\Documents\CHEEZCOFI.mp4" ;"C:\msys64\home\Pandela\cofi1.mkv"
 
 
-FileDelete,%File%
-;MakeTree()
-gosub,MakeTree
-;run % A_ScriptDir . "\SoundBrowser.ahk",,,NewPID
- ; wait until active
-WinWait,%TreeRoot%
-  ; get window id
-id := WinExist()
-  ; now ie is active but the page isn't loaded
-;Sleep 5000
-  ; better be loaded now
-  ; then get title from saved window id
-WinGetTitle,Title,ahk_id %id%
-;MsgBox,%ErrorLevel%: %NEWPID% %Title%
+FileDelete,%File% ;delete timestamp log
+gosub,MakeTree ;make sound browser window
+WinWait,%TreeRoot% ;wait for sound browser
+id := WinExist() ;get sound browser window handle
+
+WinGetTitle,Title,ahk_id %id% ;get sound browser title
 TreeWindow := WinExist(Title)
-TIDSWindow := WinExist("H.L.M.M")
+HLMMwindow := WinExist("H.L.M.M")
 WinGetPos,winX,winY,winW,winH,H.L.M.M
 ;msgbox % winX " " winY " " winW " " winH
 test1 := winW / 2 + 150
@@ -64,7 +54,7 @@ test4 := winH / 2 - 80
 test8 := winH + 1
 
     	;Embed FFplay inside our gui
-DllCall("SetParent", "uint", TreeWindow, "uint", TIDSWindow)
+DllCall("SetParent", "uint", TreeWindow, "uint", HLMMwindow)
 id_2 := WinExist("ahk_id " TreeWindow)
 WinSet,Redraw,,%Title%
 
@@ -119,7 +109,7 @@ AlreadyRunning := 1
 
 
 
-TIDSWindow := WinExist("H.L.M.M")
+HLMMwindow := WinExist("H.L.M.M")
 FFPlayWindow := WinExist("ahk_class SDL_app")
 
 ; Get size of FFPlay window, excluding caption and borders:
@@ -132,7 +122,7 @@ DisableCloseButton(FFPlayWindow)
 ;msgbox % FFPlayWindow
 
 ;Embed FFplay inside our gui
-DllCall("SetParent", "uint", FFplayWindow, "uint", TIDSWindow)
+DllCall("SetParent", "uint", FFplayWindow, "uint", HLMMwindow)
 id_1 := WinExist("ahk_id " FFplayWindow)
 
 ;msgbox % px " " py " " pw " " ph
@@ -204,17 +194,11 @@ class CLogTailer {
 }
 
 
-2GuiClose:
-Process,Close,ffplay.exe
-ExitApp
-
-
 
 DisplayTimestamp()
 {
 gosub, displayTS
 }
-
 
 DisplayTS:
 loop {
@@ -241,7 +225,6 @@ if !FileExist(NewFile) && (FixVideo = 1) {
 	sleep, 100
 	global Input := NewFile
 }
-
 Return
 
 SkipForward:
@@ -262,15 +245,6 @@ if (Inactive = 1) {
 }
 Backward(ms)
 Return
-
-F8::
-WinGet, hWnd2, ID, ahk_id %id_1%
-;msgbox % hWnd2
-WinActivate,ahk_id %hWnd2%
-WinGetPos, pX,pY,pW,pH,ahk_id %id_1%
-WinGet, hWnd, ID, H.L.M.M
-msgbox % px " " py " " pw " " ph
-return
 
 
 StopPlay:
@@ -294,17 +268,13 @@ Return
 
 
 2GuiSize:
-sleep, 50
 WinGetPos,winX,winY,winW,winH,H.L.M.M
 test1 := winW / 2 + 150
 test2 := winH / 2 + 30
 test3 := winW / 2 - 180
 test4 := winH / 2 - 80
-;If (A_EventInfo == 1) {
-;        Return
-;}
+
 balls := !balls
-;msgbox % balls
 
 if (balls = 1) {
 	thisX := "x0.0"
@@ -320,8 +290,7 @@ AutoXYWH( thisX " " thisY, hBtnOk)
 AutoXYWH( thisX " " thisY, hBtnOk2)
 AutoXYWH( thisX " " thisY, hBtnOk3)
 AutoXYWH( thisX " " thisY, hBtnOk4)
-	; Move and resize FFPlay window. Note that if SWP_NOSENDCHANGING
-	; is omitted, it incorrectly readjusts the size of its client area.
+
 DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
     , "int", test1, "int",test2, "int", test3, "int",test4
     , "uint", SWP_NOACTIVATE|SWP_SHOWWINDOW|SWP_NOSENDCHANGING)
@@ -329,7 +298,7 @@ sleep, 20
 WinSet,Redraw,,A
 ;WinActivate,H.L.M.M
 return
-Return
+
 
 
 
@@ -423,7 +392,7 @@ Nudge()
 ;}
 
 
-	
+;Audio File browser 
 #Include ./config/SoundBrowser.ahk
 
 
@@ -559,35 +528,25 @@ Return
 
 RemakeTree:
 gosub,MakeTree
-;run % A_ScriptDir . "\SoundBrowser.ahk",,,NewPID
- ; wait until active
 WinWait,%TreeRoot%
-  ; get window id
+
 id := WinExist()
-  ; now ie is active but the page isn't loaded
-;Sleep 5000
-  ; better be loaded now
-  ; then get title from saved window id
 WinGetTitle,Title,ahk_id %id%
-;MsgBox,%ErrorLevel%: %NEWPID% %Title%
+
 TreeWindow := WinExist(Title)
-TIDSWindow := WinExist("H.L.M.M")
+HLMMwindow := WinExist("H.L.M.M")
 WinGetPos,winX,winY,winW,winH,H.L.M.M
-;msgbox % winX " " winY " " winW " " winH
+
 test1 := winW / 2 + 150
 test2 := winH / 2 + 30
 test3 := winW / 2 - 180
 test4 := winH / 2 - 80
 test8 := winH + 1
 
-    	;Embed FFplay inside our gui
-DllCall("SetParent", "uint", TreeWindow, "uint", TIDSWindow)
+DllCall("SetParent", "uint", TreeWindow, "uint", HLMMwindow)
 id_2 := WinExist("ahk_id " TreeWindow)
 WinSet,Redraw,,%Title%
 
-
-	; Move and resize FFPlay window. Note that if SWP_NOSENDCHANGING
-	; is omitted, it incorrectly readjusts the size of its client area.
 DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
     , "int", test1, "int",test2, "int", test3, "int", test4
     , "uint", SWP_SHOWWINDOW)
@@ -595,6 +554,10 @@ DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
 sleep, 500
 WinSet,Redraw,,A
 return
+
+2GuiClose:
+Process,Close,ffplay.exe
+ExitApp
 
 
 #IfWinActive,H.L.M.M
