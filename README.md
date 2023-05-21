@@ -15,6 +15,7 @@ You can get all the sounds here: https://www.sounds-resource.com/pc_computer/hal
 · FREE OPEN SOURCE SOFTWARE<br>
 
 # TO DO
+· Make the UI prettier
 · Add video filter support<br>
 · Add interactive video timeline slider<br>
 · Fix output audio quality<br>
