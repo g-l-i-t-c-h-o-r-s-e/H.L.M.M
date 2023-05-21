@@ -302,6 +302,8 @@ DllCall("SetWindowPos", "uint", TreeWindow, "uint", 0
     , "uint", SWP_NOACTIVATE|SWP_SHOWWINDOW|SWP_NOSENDCHANGING)
 sleep, 20
 WinSet,Redraw,,A
+WinSet,Redraw,,ahk_id %id_1%
+WinActivate,ahk_id %id_1%
 return
 
 
