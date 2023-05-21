@@ -11,7 +11,7 @@ You can get all the sounds here: https://www.sounds-resource.com/pc_computer/hal
 · Drag and Drop file input support, you can also drag a folder into the sound browser window now<br>
 · The FFplay window size and location is remembered when you switch out/load a new video<br>
 · You can apply an seperate audio filter to each individual audio file in the filterchain<br>
-· Preview Audio files by double right clicking, select them by double left clicking
+· Preview Audio files by double right clicking, select them by double left clicking<br>
 · FREE OPEN SOURCE SOFTWARE<br>
 
 # TO DO
