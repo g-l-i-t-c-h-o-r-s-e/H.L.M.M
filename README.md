@@ -15,6 +15,14 @@ You can get all the sounds here: https://www.sounds-resource.com/pc_computer/hal
 · Modify the timetamp of where each audio file is placed, down to the millisecond (via gui)<br>
 · FREE OPEN SOURCE SOFTWARE<br>
 
+# Hotkeys
+· `Space` = Pause/Play<br>
+· `S` = Skip/Nudge video by 1 frame<br>
+· `P` = Pause<br>
+· `Left or Right arrow` = Skip a few frames (skipInterval is adjustable)<br>
+· `Up or Down arrow` = Skip like 30 seconds I think?<br>
+· `M` = Mute Audio<br>
+
 # TO DO
 · Make the UI prettier<br>
 · Add video filter support<br>
