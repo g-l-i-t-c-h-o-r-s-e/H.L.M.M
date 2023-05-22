@@ -19,11 +19,25 @@ py := 0
 Inactive := 0
 counter2 := 0
 global VideoLoaded := 0
+global isPaused := 0
+SetWorkingDir,A_ScriptDir
 
+
+global customFFplay := 1
+ffplayPath := A_ScriptDir "\config\ffplayy.exe"
+
+if (customFFplay = 0) {
+	ffplayPath := "ffplay"
+	ffplayName := "ffplay.exe"
+}
+
+if (customFFplay = 1) {
+	SplitPath,ffplayPath,ffplayName
+}
 
 FixVideo := 0 ;Convert all frames in video to keyframes
 KeyframeInterval := 1 ;Set to 1 to make ALL frames keyframe, this should probably be 1 if you're using the flag above
-Process,Close,ffplay.exe ;close background ffplay process if its running
+Process,Close,%ffplayName% ;close background ffplay process if its running
 
 ;gui 2:, +LastFound +E0x00010000 ;The ExStyle allows the parent to take focus if it's clicked.
 gui 2: color,gray
@@ -35,7 +49,7 @@ gui 2:  Show, w1280 h720, H.L.M.M
 gui 2:  +Resize
 
 TreeRoot := "C:\Users\Pandela\Downloads\Half-Life 1"
-File := A_ScriptDir . "timestampLog.txt"
+File := A_ScriptDir . "\timestampLog2.txt"
 Input := ""
 
 
@@ -86,12 +100,13 @@ F3::
 OpenVideo:
 SplitPath,Input,,sourceFolder,,filename2
 
-Process,Close,ffplay.exe
+Process,Close,%ffplayName%
 gosub, checkFix
-ffplay := ComSpec " /c ffplay -seek_interval " SeekInterval " -i " Input " -hide_banner 2>> " File
+ffplay := "cmd.exe /c " ffplayPath " -hide_banner -seek_interval " SeekInterval " -i " chr(0x22) Input chr(0x22) " 2>> " chr(0x22) File chr(0x22)
 run, % ffplay,,Hide,ffplayPID
+clipboard := ffplay
 
-WinWaitActive,ahk_class SDL_app,,3
+WinWait,ahk_class SDL_app
 ControlSend,,{Space},ahk_class SDL_app ;pause video initially
 sleep, 500
 
@@ -152,7 +167,12 @@ NewLine(text){
 	global ms := ceil((timestamp * 1000))
 	
 	;This is to prevent the timestamp from being 0, in sacrifice of a few milliseconds in the timeline
-	if (ms = 0) && (Timestamp != "0.00") && (VideoLoaded = 1) {
+	if (ms = 0) && (Timestamp != "0.00") && (VideoLoaded = 1) && (isPaused = 1) && (customFFplay = 1) {
+		ControlSend,,S,H.L.M.M
+	}
+	
+	;This is to prevent the timestamp from being 0, in sacrifice of a few milliseconds in the timeline
+	if (ms = 0) && (Timestamp != "0.00") && (VideoLoaded = 1) && (customFFplay = 0) {
 		ControlSend,,S,H.L.M.M
 	}
 	
@@ -160,7 +180,7 @@ NewLine(text){
 	GuiControl,,SoundOffset,%ms%
 	
 	if (wao = 1) {
-		ToolTip % "Timestamp: " timestamp "`n ms: " ms "`n"
+		ToolTip % "Timestamp: " timestamp "`n ms: " ms "`n" isPaused
 	}
 	
 	if (wao = 0) {
@@ -311,6 +331,12 @@ return
 Forward(ms)
 {
 	ControlSend,,{Right},H.L.M.M
+	if (isPaused = 0) && (customFFplay = 1) {
+		sleep, 20
+		ControlSend,,S,H.L.M.M
+		sleep, 1
+		ControlSend,,P,H.L.M.M
+	}
 }
 
 
@@ -318,17 +344,30 @@ Forward(ms)
 Backward(ms)
 {
 	ControlSend,,{Left},H.L.M.M
+	if (isPaused = 0) && (customFFplay = 1) {
+		sleep, 20
+		ControlSend,,S,H.L.M.M
+		sleep, 1
+		ControlSend,,P,H.L.M.M
+	}
 }
 
 
 StopAndPlay()
 {
+	global isPaused := !isPaused
+	sleep, 5
 	ControlSend,,{Space},H.L.M.M
+	
 }
 
 Nudge()
 {
 	ControlSend,,S,H.L.M.M
+	if (customFFplay = 1) {
+		sleep, 1
+		ControlSend,,{Space},H.L.M.M	
+	}
 }
 
 
@@ -502,15 +541,42 @@ WinSet,Redraw,,A
 return
 
 2GuiClose:
-Process,Close,ffplay.exe
+Process,Close,%ffplayName%
 ExitApp
 
 
 #IfWinActive,H.L.M.M
-S::ControlSend,,S,H.L.M.M ;Allow to send S key to nudge video one frame
+S::Nudge() ;Allow to send S key to nudge video one frame
 Q:: ;do nothing, prevents closing ffplay window
+P::StopAndPlay()
+Space::StopAndPlay()
+Left::Backward(ms)
+Right::Forward(ms)
 
 #IfWinActive, ahk_class SDL_app
 Q:: ;do nothing, prevents closing ffplay window
 Esc:: ;do nothing, prevents closing ffplay window
 F:: ;do nothing, prevents fullscreen ffplay window
+S:: Nudge()
+P::StopAndPlay()
+Space::StopAndPlay()
+Left::Backward(ms)
+Right::Forward(ms)
+RButton::
+loop {
+	state := GetKeyState("RButton", "P") ; True if Xbutton1 is ON, false otherwise.
+	SendEvent, {RButton down}
+	sleep, 1
+	if (state = 0) {
+		SendEvent, {RButton up}
+		if (isPaused = 0) { ; && (customFFplay = 0)
+			sleep, 1
+			ControlSend,,S,H.L.M.M
+			sleep, 1
+			ControlSend,,P,H.L.M.M
+		}
+		break
+	}
+	
+}
+return
